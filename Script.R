@@ -26,6 +26,8 @@ library(performance)  # Para diagnósticos de modelo
 library(yardstick)    # Para métricas precisas de clasificación
 library(pROC)         # Para curva ROC y AUC
 library(caret)        # Para clasificación y entrenamiento de datos
+library(rpart)        # Para implementar árboles de decisión
+library(rpart.plot)   # Para visualizar árboles de desición
 
 ## 2.2 Carga de datos ----
 data <- read.csv("datos_teleco_Act2_ADMN.csv")
@@ -103,4 +105,15 @@ confusionMatrix(pred_test, data_test$Abandono)
 
 ## 3.2 Modelo Arbol de decisión ----
 
+m2 <- rpart(Abandono ~ Contrato + Factura_digital + Servicio_Internet +
+            Soporte_tecnico + CopiaSeguridad_Online + Television_carta +
+            Meses_alta,
+            method = "class",
+            data = data2)
 
+summary(m2)
+
+rpart.plot(m2, tweak= 1)
+
+rpart.plot(m2, tweak=1, branch.col = "grey40", branch.lwd = 2,
+           compress = TRUE, uniform = TRUE)
