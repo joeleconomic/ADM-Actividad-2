@@ -30,7 +30,8 @@ library(rpart)        # Para implementar árboles de decisión
 library(rpart.plot)   # Para visualizar árboles de desición
 
 ## 2.2 Carga de datos ----
-data <- read.csv("datos_teleco_Act2_ADMN.csv")
+data <- read.csv("datos_teleco_Act2_ADMN.csv") |> 
+  select(Abandono)
 
 ## 2.3 Conocer y tratar los datos ----
 
@@ -60,9 +61,14 @@ data2 <- data |>
     Metodo_pago = as.factor(Metodo_pago),
     Abandono = as.factor(Abandono),
     meses_alta_cut = as.factor(meses_alta_cut)
-  )
+  ) |> 
+  select(Abandono,Contrato, Factura_digital, Servicio_Internet, Soporte_tecnico,
+         CopiaSeguridad_Online, Television_carta, Meses_alta)
 
+str(data)
 summary(data2)
+
+glimpse(data2)
 
 # Análisis descriptivo de la tasa de abandono
 table(data2$Abandono)
