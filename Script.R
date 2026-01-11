@@ -25,6 +25,7 @@ library(margins)      # Para odds ratios y efectos marginales
 library(performance)  # Para diagnósticos de modelo
 library(yardstick)    # Para métricas precisas de clasificación
 library(pROC)         # Para curva ROC y AUC
+library(caret)        # Para clasificación y entrenamiento de datos
 
 ## 2.2 Carga de datos ----
 data <- read.csv("datos_teleco_Act2_ADMN.csv")
@@ -65,9 +66,9 @@ summary(data2)
 table(data2$Abandono)
 prop.table(table(data2$Abandono))
 
-# 3 Modelo Logit ----
+# 3 Modelización ----
 
-## 3.1 Modelo 1 ----
+## 3.1 Modelo Logit ----
 
 m1 <- glm(Abandono ~ Contrato + Factura_digital + Servicio_Internet +
           Soporte_tecnico + CopiaSeguridad_Online + Television_carta +
@@ -81,5 +82,25 @@ summary(m1)
 # cuando otra variable cambia, en el caso de las Dummies, se evalua con la 
 # categoría de referencia.
 margins(m1)
+
+# Establecer datos y matriz de confusión
+
+set.seed(123) # Para garantizar la reproducibilidad de los resultados.
+
+# Partición 80% train, 20% test
+train_index <- createDataPartition(data2$Abandono, p = 0.8, list = FALSE)
+
+data_train <- data2[train_index, ]
+data_test  <- data2[-train_index, ]
+prob_test <- predict(m1, newdata = data_test, type = "response")
+
+pred_test <- ifelse(prob_test > 0.5, "Yes", "No") |> 
+  factor(levels = c("No", "Yes"))
+
+confusionMatrix(pred_test, data_test$Abandono)
+
+# 79.29% de las observaciones se clasificaron correctamente
+
+## 3.2 Modelo Arbol de decisión ----
 
 
