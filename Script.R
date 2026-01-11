@@ -17,8 +17,8 @@
 
 
 
-# 2. Pasos previos a la modelización ----
-# Librerias necesarios
+# 2. Carga y transformación de datos ----
+## 2.1 Librerias necesarias ----
 library(tidyverse)    # Para tratamiento y visualización de datos
 library(broom)        # Para tidy summaries
 library(margins)      # Para odds ratios y efectos marginales
@@ -26,14 +26,60 @@ library(performance)  # Para diagnósticos de modelo
 library(yardstick)    # Para métricas precisas de clasificación
 library(pROC)         # Para curva ROC y AUC
 
-# Carga de datos
+## 2.2 Carga de datos ----
 data <- read.csv("datos_teleco_Act2_ADMN.csv")
 
-# Ver los datos
+## 2.3 Conocer y tratar los datos ----
+
+# Ver el set de datos
 str(data)
 summary(data)
 colSums(is.na(data))
 
+# Categorizar dummies como factores
+data2 <- data |> 
+  mutate(
+    Jubilado = factor(Jubilado, levels = c(0, 1), labels = c("No", "Yes")),
+    Sexo = as.factor(Sexo),
+    Socio = as.factor(Socio),
+    Empleado = as.factor(Empleado),
+    Servicio_telefonico = as.factor(Servicio_telefonico),
+    Lineas_multiples = as.factor(Lineas_multiples),
+    Servicio_Internet = as.factor(Servicio_Internet),
+    Seguridad_Online = as.factor(Seguridad_Online),
+    CopiaSeguridad_Online = as.factor(CopiaSeguridad_Online),
+    Proteccion_dispositivo = as.factor(Proteccion_dispositivo),
+    Soporte_tecnico = as.factor(Soporte_tecnico),
+    Television_carta = as.factor(Television_carta),
+    Peliculas_carta = as.factor(Peliculas_carta),
+    Contrato = as.factor(Contrato),
+    Factura_digital = as.factor(Factura_digital),
+    Metodo_pago = as.factor(Metodo_pago),
+    Abandono = as.factor(Abandono),
+    meses_alta_cut = as.factor(meses_alta_cut)
+  )
+
+summary(data2)
+
 # Análisis descriptivo de la tasa de abandono
-table(data$Abandono)
-prop.table(table(data$Abandono))
+table(data2$Abandono)
+prop.table(table(data2$Abandono))
+
+# 3 Modelo Logit ----
+
+## 3.1 Modelo 1 ----
+
+m1 <- glm(Abandono ~ Contrato + Factura_digital + Servicio_Internet +
+          Soporte_tecnico + CopiaSeguridad_Online + Television_carta +
+          Meses_alta, 
+          family = "binomial",
+          data = data2)
+
+summary(m1)
+
+# Efecto Marginal Promedio (AME): Cómo cambia la probabilidad de Abandono,
+# cuando otra variable cambia, en el caso de las Dummies, se evalua con la 
+# categoría de referencia.
+margins(m1)
+
+
