@@ -127,7 +127,7 @@ m1predcod1 <- ifelse(m1pred > 0.65, "Yes", "No") |>
   factor(levels = c("No", "Yes"))
 
 # Matriz de confusión
-confusionMatrix(m1predcod1, data2$Abandono)
+confusionMatrix(m1predcod1, data2$Abandono, positive = "Yes")
 
 # Ahora, el modelo acertó un 78.28% de las veces, por lo que EMPEORÓ el modelo
 
