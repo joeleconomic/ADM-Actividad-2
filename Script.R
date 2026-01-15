@@ -118,8 +118,7 @@ m1predcod <- ifelse(m1pred > 0.5, "Yes", "No") |>
   factor(levels = c("No", "Yes"))
 
 # E) Matriz de confusión
-confusionMatrix(m1predcod, data2$Abandono)
-
+confusionMatrix(m1predcod, data2$Abandono, positive = "Yes")
 ### El modelo ha acertado un 79.22% de las veces ###
 
 # F) Probaremos a cambiar el umbral a 0.65, 
