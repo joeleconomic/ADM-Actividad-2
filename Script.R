@@ -1,20 +1,22 @@
 
 # 1. Descripción de la tarea ----
 
-# Con el fin de evitar el sobreajuste, y como paso previo a la aplicación de 
-# clasificadores, deberá particionar el conjunto de datos en entrenamiento y en 
-# test con la proporción de 80/20 (entrenamiento/test).
+# Toma de contacto con los datos, limpieza, transformación y análisis exploratorio inicial
 
-# Dos modelos de clasificación que permita predecir el abandono de un cliente 
+# Dos modelos de clasificación que permitan predecir el abandono de un cliente 
 # (Abandono) basado en la experiencia pasada.  Con el fin de responder a la 
 # pregunta, podrá usar un modelo logit y de árbol de decisión y usando las 
 # siguientes variables: Contrato, Factura digital, Servicio Internet, Soporte 
-# técnico, Copia de Seguridad Online, Televisión, Meses de alta en el servicio, 
+# técnico, Copia de Seguridad Online, Televisión, Meses de alta en el servicio 
 
 # ¿Qué modelo de clasificación tiene una mayor precisión? Razone su respuesta
+
 # ¿Cómo se podría obtener una clasificación de la importancia de las variables 
 # en nuestro modelo?
 
+# Particionar el conjunto de datos en entrenamiento y en 
+# test con la proporción de 80/20 (entrenamiento/test). 
+# Lo usaremos al final de la actividad como forma de VALIDACIÓN DEL MODELO
 
 
 # 2. Carga y transformación de datos ----
@@ -75,9 +77,10 @@ summary(data2)
 
 glimpse(data2)
 
-# Análisis descriptivo de la tasa de abandono
+## 2.4 Análisis descriptivo inicial de la tasa de abandono
 table(data2$Abandono)
 prop.table(table(data2$Abandono))
+
 
 # 3 Modelización ----
 
