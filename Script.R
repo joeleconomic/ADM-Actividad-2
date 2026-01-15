@@ -32,14 +32,14 @@ library(rpart)        # Para implementar árboles de decisión
 library(rpart.plot)   # Para visualizar árboles de desición
 
 ## 2.2 Carga de datos ----
-data <- read.csv("datos_teleco_Act2_ADMN.csv") |> 
-  select(Abandono)
+data <- read.csv("datos_teleco_Act2_ADMN.csv")
 
 ## 2.3 Conocer y tratar los datos ----
 
 # Ver el set de datos
 str(data)
 summary(data)
+head(data)
 
 # A) Detección de filas duplicadas
 num_duplicados <- sum(duplicated(data))  # No hay
@@ -69,13 +69,13 @@ data2 <- data |>
     Abandono = as.factor(Abandono),
     meses_alta_cut = as.factor(meses_alta_cut)
   ) |> 
-  select(Abandono,Contrato, Factura_digital, Servicio_Internet, Soporte_tecnico,
+  # Selección de variables requeridas para el modelo
+  select(Abandono, Contrato, Factura_digital, Servicio_Internet, Soporte_tecnico,
          CopiaSeguridad_Online, Television_carta, Meses_alta)
 
+# Verificación del dataset limpio 'data2'
 str(data2)
 summary(data2)
-
-glimpse(data2)
 
 ## 2.4 Análisis descriptivo inicial de la tasa de abandono
 table(data2$Abandono)
