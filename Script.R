@@ -69,12 +69,13 @@ data2 <- data |>
     Abandono = as.factor(Abandono),
     meses_alta_cut = as.factor(meses_alta_cut)
   ) |> 
-  # Selección de variables requeridas para el modelo
+# Selección de las variables requeridas para el modelo
   select(Abandono, Contrato, Factura_digital, Servicio_Internet, Soporte_tecnico,
          CopiaSeguridad_Online, Television_carta, Meses_alta)
 
 # Verificación del dataset limpio 'data2'
 str(data2)
+glimpse(data2)
 summary(data2)
 
 ## 2.4 Análisis descriptivo inicial de la tasa de abandono
