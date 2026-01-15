@@ -73,7 +73,7 @@ data2 <- data |>
   select(Abandono, Contrato, Factura_digital, Servicio_Internet, Soporte_tecnico,
          CopiaSeguridad_Online, Television_carta, Meses_alta)
 
-# Verificación del dataset limpio 'data2'
+# D) Verificación del dataset limpio 'data2'
 str(data2)
 glimpse(data2)
 summary(data2)
@@ -113,16 +113,16 @@ m1pred <- predict(m1, type = "response")
 View(m1pred)
 
 # D) Predicción del modelo LOGIT haciendo la codificación a "Yes" / "No",
-# además fijamos el umbral en 0.5
+# Además fijamos el umbral en 0.5
 m1predcod <- ifelse(m1pred > 0.5, "Yes", "No") |> 
   factor(levels = c("No", "Yes"))
 
-# Matriz de confusión
+# E) Matriz de confusión
 confusionMatrix(m1predcod, data2$Abandono)
 
 ### El modelo ha acertado un 79.22% de las veces ###
 
-# Probaremos a cambiar el umbral a 0.65, 
+# F) Probaremos a cambiar el umbral a 0.65, 
 # para comprobar si esto mejora o empeora el modelo
 m1predcod1 <- ifelse(m1pred > 0.65, "Yes", "No") |> 
   factor(levels = c("No", "Yes"))
@@ -137,7 +137,6 @@ confusionMatrix(m1predcod1, data2$Abandono)
 
 
 ## 3.2 Modelo Arbol de decisión ---- 
-
 m2 <- rpart(Abandono ~ Contrato + Factura_digital + Servicio_Internet +
             Soporte_tecnico + CopiaSeguridad_Online + Television_carta +
             Meses_alta,
