@@ -38,9 +38,14 @@ data <- read.csv("datos_teleco_Act2_ADMN.csv") |>
 # Ver el set de datos
 str(data)
 summary(data)
-colSums(is.na(data))
 
-# Categorizar dummies como factores
+# A) Detección de filas duplicadas
+num_duplicados <- sum(duplicated(data))  # No hay
+
+# B) Detección de Valores Ausentes (NAs)
+colSums(is.na(data))  # No hay
+
+# C) Categorizar dummies como factores
 data2 <- data |> 
   mutate(
     Jubilado = factor(Jubilado, levels = c(0, 1), labels = c("No", "Yes")),
@@ -65,7 +70,7 @@ data2 <- data |>
   select(Abandono,Contrato, Factura_digital, Servicio_Internet, Soporte_tecnico,
          CopiaSeguridad_Online, Television_carta, Meses_alta)
 
-str(data)
+str(data2)
 summary(data2)
 
 glimpse(data2)
