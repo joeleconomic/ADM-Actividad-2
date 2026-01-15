@@ -113,7 +113,7 @@ m1pred <- predict(m1, type = "response")
 View(m1pred)
 
 # D) Predicción del modelo LOGIT haciendo la codificación a "Yes" / "No",
-# Además fijamos el umbral en 0.5
+# Además fijamos el umbral de probabilidad en 0.5
 m1predcod <- ifelse(m1pred > 0.5, "Yes", "No") |> 
   factor(levels = c("No", "Yes"))
 
@@ -132,7 +132,7 @@ confusionMatrix(m1predcod1, data2$Abandono)
 
 # Ahora, el modelo acertó un 78.28% de las veces, por lo que EMPEORÓ el modelo
 
-### NOS QUEDAREMOS CON EL UMBRAL FIJADO EN 0.5 ### 
+### NOS QUEDAREMOS CON EL UMBRAL DE PROBABILIDAD FIJADO EN 0.5 ### 
 ## QUE ACIERTA EN UN 79.22% DE LAS VECES ###
 
 
