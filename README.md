@@ -7,7 +7,7 @@ La base de datos original puede descargarse en [Kaggle](https://www.kaggle.com/b
 
 ## Objetivos
 1. **Partición de los datos**  
-   Dividir el conjunto de datos en **entrenamiento (80%)** y **test (20%)** para evitar sobreajuste.
+   Dividir el conjunto de datos en **entrenamiento (80%)** y **test (20%)** para evitar sobreajuste. Lo usaremos al final de la actividad como forma de VALIDACIÓN DEL MODELO
 
 2. **Modelos de clasificación**  
    - **Modelo logit** (regresión logística) para predecir la variable `Abandono`.  
