@@ -79,8 +79,38 @@ glimpse(data2)
 summary(data2)
 
 ## 2.4 Análisis descriptivo inicial de la tasa de abandono
-table(data2$Abandono)
-prop.table(table(data2$Abandono))
+cat("\n--- DISTRIBUCIÓN DE LA VARIABLE OBJETIVO (ABANDONO) ---\n")
+conteo <- table(data2$Abandono)
+porcentajes <- prop.table(conteo) * 100
+print(conteo)
+print(round(porcentajes, 2))
+
+# 2.5 Análisis Bivariante (Factores Clave)
+# Cruzamos variables para ver tendencias a simple vista.
+
+# A) Abandono vs Tipo de Contrato
+cat("\n--- TASA DE ABANDONO POR TIPO DE CONTRATO ---\n")
+tabla_contrato <- table(data2$Contrato, data2$Abandono)
+print(prop.table(tabla_contrato, margin = 1) * 100)
+# Interpretación: Observa cómo el contrato mensual tiene mucha más fuga.
+
+# B) Abandono vs Servicio de Internet
+cat("\n--- TASA DE ABANDONO POR TIPO DE INTERNET ---\n")
+tabla_internet <- table(data2$Servicio_Internet, data2$Abandono)
+print(prop.table(tabla_internet, margin = 1) * 100)
+
+# 2.6 Análisis de Antigüedad
+# ¿Se van más los clientes nuevos o los antiguos?
+cat("\n--- MEDIA DE MESES DE ALTA (ANTIGÜEDAD) ---\n")
+# Calculamos la media de meses para los que se quedan (No) vs los que se van (Yes)
+medias_antiguedad <- tapply(data2$Meses_alta, data2$Abandono, mean, na.rm=TRUE)
+print(medias_antiguedad)
+
+# Visualización (Boxplot) 
+boxplot(Meses_alta ~ Abandono, data = data2,
+        main = "Antigüedad (Meses) vs Abandono",
+        xlab = "¿Abandona?", ylab = "Meses de Antigüedad",
+        col = c("forestgreen", "red"))
 
 
 # 3 Modelización ----
