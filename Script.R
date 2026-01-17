@@ -78,14 +78,14 @@ str(data2)
 glimpse(data2)
 summary(data2)
 
-## 2.4 Análisis descriptivo inicial de la tasa de abandono
+## 2.4 Análisis descriptivo inicial de la tasa de abandono ----
 cat("\n--- DISTRIBUCIÓN DE LA VARIABLE OBJETIVO (ABANDONO) ---\n")
 conteo <- table(data2$Abandono)
 porcentajes <- prop.table(conteo) * 100
 print(conteo)
 print(round(porcentajes, 2))
 
-# 2.5 Análisis Bivariante (Factores Clave)
+## 2.5 Análisis Bivariante (Factores Clave) ----
 # Cruzamos variables para ver tendencias a simple vista.
 
 # A) Abandono vs Tipo de Contrato
@@ -99,7 +99,7 @@ cat("\n--- TASA DE ABANDONO POR TIPO DE INTERNET ---\n")
 tabla_internet <- table(data2$Servicio_Internet, data2$Abandono)
 print(prop.table(tabla_internet, margin = 1) * 100)
 
-# 2.6 Análisis de Antigüedad
+## 2.6 Análisis de Antigüedad ----
 # ¿Se van más los clientes nuevos o los antiguos?
 cat("\n--- MEDIA DE MESES DE ALTA (ANTIGÜEDAD) ---\n")
 # Calculamos la media de meses para los que se quedan (No) vs los que se van (Yes)
@@ -166,18 +166,35 @@ confusionMatrix(m1predcod1, data2$Abandono, positive = "Yes")
 
 
 ## 3.2 Modelo Arbol de decisión ---- 
+
+# Estimación del modelo
 m2 <- rpart(Abandono ~ Contrato + Factura_digital + Servicio_Internet +
             Soporte_tecnico + CopiaSeguridad_Online + Television_carta +
             Meses_alta,
             method = "class",
             data = data2)
 
+# Resumen del módelo árbol de decisión
 summary(m2)
 
-rpart.plot(m2, tweak= 1)
-
+# Visualización del árbol de decisión
 rpart.plot(m2, tweak=1, branch.col = "grey40", branch.lwd = 2,
            compress = TRUE, uniform = TRUE)
+
+# Predicción de la probabilidad de abandono según el modelo árbol de decisión
+# asignando directamente a la clase mayoritaria en cada hoja del árbol
+m2pred <- predict(m2, type = "class")
+
+# Matriz de confusión
+confusionMatrix(m2pred, data2$Abandono, positive = "Yes")
+
+# Predicción de la probabilidad de abandono, utilizando un umbral de probabilidad
+# de 0.5.
+m2pred05 <- ifelse(m2prob > 0.5, "Yes", "No") |>
+  factor(levels = c("No", "Yes"))
+
+confusionMatrix(m2pred05, data2$Abandono, positive = "Yes")
+
 
 
 ## 4 ¿Qué modelo de clasificación tiene una mayor precisión? ----
