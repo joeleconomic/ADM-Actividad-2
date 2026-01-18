@@ -188,15 +188,6 @@ m2pred <- predict(m2, type = "class")
 # Matriz de confusión
 confusionMatrix(m2pred, data2$Abandono, positive = "Yes")
 
-# Predicción de la probabilidad de abandono, utilizando un umbral de probabilidad
-# de 0.5.
-m2pred05 <- ifelse(m2prob > 0.5, "Yes", "No") |>
-  factor(levels = c("No", "Yes"))
-
-confusionMatrix(m2pred05, data2$Abandono, positive = "Yes")
-
-
-
 ## 4 ¿Qué modelo de clasificación tiene una mayor precisión? ----
 
 
