@@ -1,4 +1,3 @@
-
 # 1 Descripción de la tarea ----
 
 # Toma de contacto con los datos, limpieza, transformación y análisis exploratorio inicial
