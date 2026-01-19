@@ -21,6 +21,11 @@
 # 2 Carga y transformación de datos ----
 ## 2.1 Librerias necesarias ----
 library(tidyverse)    # Para tratamiento y visualización de datos
+library(lubridate)    # Manejo de fechas
+library(ggplot2)      # Visualización
+library(psych)        # Estadística descriptiva
+library(corrplot)     # Matriz de correlación
+library(forecast)     # Predicciones de series temporales
 library(broom)        # Para tidy summaries
 library(margins)      # Para odds ratios y efectos marginales
 library(performance)  # Para diagnósticos de modelo
@@ -29,6 +34,7 @@ library(pROC)         # Para curva ROC y AUC
 library(caret)        # Para clasificación y entrenamiento de datos
 library(rpart)        # Para implementar árboles de decisión
 library(rpart.plot)   # Para visualizar árboles de desición
+library(caTools)      # Para divivir la muestra con sample.split
 
 ## 2.2 Carga de datos ----
 data <- read.csv("datos_teleco_Act2_ADMN.csv")
