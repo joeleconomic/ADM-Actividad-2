@@ -35,6 +35,8 @@ library(caret)        # Para clasificación y entrenamiento de datos
 library(rpart)        # Para implementar árboles de decisión
 library(rpart.plot)   # Para visualizar árboles de desición
 library(caTools)      # Para divivir la muestra con sample.split
+library(ggplot2)      #
+
 
 ## 2.2 Carga de datos ----
 data <- read.csv("datos_teleco_Act2_ADMN.csv")
@@ -195,6 +197,47 @@ confusionMatrix(m2pred, data2$Abandono, positive = "Yes")
 
 ## 4 ¿Qué modelo de clasificación tiene una mayor precisión? ----
 
+# a. Predicciones con el Modelo Logit (m1)
+# Calculamos la probabilidad y convertimos a clase "Yes/No" usando el umbral 0.5
+prob_logit <- predict(m1, type = "response")
+pred_logit <- factor(ifelse(prob_logit > 0.5, "Yes", "No"), levels = c("No", "Yes"))
+
+# b. Predicciones con el Modelo de Árbol (m2)
+# El árbol permite obtener directamente la clase predicha
+pred_tree <- predict(m2, type = "class")
+
+# c. Matrices de Confusión
+# Comparamos las predicciones contra la columna real 'Abandono' de data2
+cm_logit <- confusionMatrix(pred_logit, data2$Abandono, positive = "Yes")
+cm_tree  <- confusionMatrix(pred_tree, data2$Abandono, positive = "Yes")
+
+# d. Cálculo de AUC (Área bajo la curva)
+roc_logit <- roc(data2$Abandono, prob_logit)
+# Para el árbol extraemos la probabilidad de la columna "Yes"
+prob_tree <- predict(m2, type = "prob")[, "Yes"]
+roc_tree  <- roc(data2$Abandono, prob_tree)
+
+# --- RESULTADOS ---
+cat("--- PRECISIÓN (ACCURACY) ---\n")
+cat("Logit:", round(cm_logit$overall["Accuracy"], 4), "\n")
+cat("Árbol:", round(cm_tree$overall["Accuracy"], 4), "\n\n")
+
+cat("--- ÁREA BAJO LA CURVA (AUC) ---\n")
+cat("Logit:", round(auc(roc_logit), 4), "\n")
+cat("Árbol:", round(auc(roc_tree), 4), "\n")
+
+# 1. Crear el objeto de la gráfica
+plot_roc <- ggroc(list(Logit = roc_logit, Arbol = roc_tree), size = 1) +
+  geom_abline(slope = 1, intercept = 1, linetype = "dashed", color = "grey") + # Línea de referencia
+  labs(title = "Comparación de Curvas ROC",
+       subtitle = "Modelo Logit vs. Árbol de Decisión",
+       x = "Especificidad (1 - Falsos Positivos)",
+       y = "Sensibilidad (Verdaderos Positivos)",
+       color = "Modelo") +
+  theme_minimal()
+
+# 2. Mostrar la gráfica
+print(plot_roc)
 
 ## 5 Partición del conjunto de datos: validación del modelo ----
 
